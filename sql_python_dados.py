@@ -4,7 +4,7 @@
 # import all libraries   
 import sqlite3
 # Criar uma conexão com o banco de dados SQLite > apontador arquivo a ser utilizado.
-conexao = sqlite3.connect('sql_python_dados')
+conexao = sqlite3.connect('')
 # Criar um objeto cursor, para passar as informacoes de conexao
 cursor = conexao.cursor()
 
@@ -23,7 +23,7 @@ five_students_data = [
 ]
 
 # Comando INSERT sintaxe: INSERT INTO nome_tabela("campo1", "campo2", ...) VALUES ("valor1", "valor2",...);
-cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (?, ?, ?, ?)', five_students_data)
+# cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (?, ?, ?, ?)', five_students_data)
 
 # Inserindo registros fazendo uso de uma List of Tuples, tabela tb_alunos (que ja tem 5 alunos).
 more_students_data = [
@@ -58,10 +58,17 @@ cursor.executemany('INSERT INTO tb_alunos (id_aluno, nome, idade, curso) VALUES 
 ## Para realizar consultas simples SELECT sintaxe: SELECT campo1, campo2, campo3 FROM nome_tabela;
 
 # (3.a) Selecionar todos os registros da tabela "alunos".
+# cursor.execute('SELECT * FROM tb_alunos;')
 cursor.execute('SELECT id_aluno, nome, idade, curso FROM tb_alunos;')
 dados_aluno = cursor.fetchall()
 for aluno in dados_aluno:
     print(aluno)
+
+# (3.b) Selecionar o nome e a idade dos alunos com mais de 20 anos.
+cursor.execute('SELECT nome, idade FROM tb_alunos WHERE idade > 20;')
+dados_maiores_vinte = cursor.fetchall()
+for maiores in dados_maiores_vinte:
+    print(maiores)
 
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit the changes
