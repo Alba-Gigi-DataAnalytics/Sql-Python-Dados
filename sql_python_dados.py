@@ -53,6 +53,7 @@ cursor.executemany('INSERT INTO tb_alunos (id_aluno, nome, idade, curso) VALUES 
 
 # Para visualizar no terminal, precisamos chamar o print()
 ## Primeiro, criamos uma variável, depois associamos a seleção desejada
+
 # (3). Consultas Básicas: escreva consultas SQL para realizar as seguintes tarefas:
 ## Para realizar consultas simples SELECT sintaxe: SELECT campo1, campo2, campo3 FROM nome_tabela;
 
@@ -74,6 +75,11 @@ cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia%" ORDER BY 
 dados_engenheiro = cursor.fetchall()
 for engenheiros in dados_engenheiro:
     print(engenheiros)
+
+# (3.d) Contar o número total de alunos na tabela
+cursor.execute('SELECT COUNT(*) FROM tb_alunos;')
+total_alunos = cursor.fetchone()[0]
+print(f'\nTotal de {total_alunos} alunos.')
 
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit the changes

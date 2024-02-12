@@ -76,6 +76,11 @@ dados_engenheiro = cursor.fetchall()
 for engenheiros in dados_engenheiro:
     print(engenheiros)
 
+# (3.d) Contar o número total de alunos na tabela
+cursor.execute('SELECT COUNT(*) FROM tb_alunos;')
+total_alunos = cursor.fetchone()[0]
+print(f'\nTotal de {total_alunos} alunos.')
+
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit the changes
 conexao.commit()
