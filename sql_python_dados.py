@@ -4,7 +4,7 @@
 # import all libraries   
 import sqlite3
 # Criar uma conexão com o banco de dados SQLite > apontador arquivo a ser utilizado.
-conexao = sqlite3.connect('')
+conexao = sqlite3.connect('sql_python_dados')
 # Criar um objeto cursor, para passar as informacoes de conexao
 cursor = conexao.cursor()
 
@@ -53,12 +53,11 @@ cursor.executemany('INSERT INTO tb_alunos (id_aluno, nome, idade, curso) VALUES 
 
 # Para visualizar no terminal, precisamos chamar o print()
 ## Primeiro, criamos uma variável, depois associamos a seleção desejada
-
 # (3). Consultas Básicas: escreva consultas SQL para realizar as seguintes tarefas:
 ## Para realizar consultas simples SELECT sintaxe: SELECT campo1, campo2, campo3 FROM nome_tabela;
 
 # (3.a) Selecionar todos os registros da tabela "alunos".
-# cursor.execute('SELECT * FROM tb_alunos;')
+cursor.execute('SELECT * FROM tb_alunos;')
 cursor.execute('SELECT id_aluno, nome, idade, curso FROM tb_alunos;')
 dados_aluno = cursor.fetchall()
 for aluno in dados_aluno:
@@ -69,6 +68,12 @@ cursor.execute('SELECT nome, idade FROM tb_alunos WHERE idade > 20;')
 dados_maiores_vinte = cursor.fetchall()
 for maiores in dados_maiores_vinte:
     print(maiores)
+
+# (3.c) Selecionar os alunos do curso de "Engenharia" em ordem alfabética.
+cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia" ORDER BY nome;')
+dados_engenheiro = cursor.fetchall()
+for engenheiros in dados_engenheiro:
+    print(engenheiros)
 
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit the changes
