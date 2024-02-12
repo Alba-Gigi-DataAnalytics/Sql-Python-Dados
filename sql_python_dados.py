@@ -53,7 +53,6 @@ cursor.executemany('INSERT INTO tb_alunos (id_aluno, nome, idade, curso) VALUES 
 
 # Para visualizar no terminal, precisamos chamar o print()
 ## Primeiro, criamos uma variável, depois associamos a seleção desejada
-
 # (3). Consultas Básicas: escreva consultas SQL para realizar as seguintes tarefas:
 ## Para realizar consultas simples SELECT sintaxe: SELECT campo1, campo2, campo3 FROM nome_tabela;
 
@@ -80,6 +79,17 @@ for engenheiros in dados_engenheiro:
 cursor.execute('SELECT COUNT(*) FROM tb_alunos;')
 total_alunos = cursor.fetchone()[0]
 print(f'\nTotal de {total_alunos} alunos.')
+
+# 4. Atualizar o curso "Engineering Computacao" para "Engenharia da Computacao"
+cursor.execute('UPDATE tb_alunos SET curso="Engenharia da Computacao" WHERE curso="Engineering Computacao";')
+update_count = cursor.rowcount
+print(f'Número de registros atualizados: {update_count}')
+
+# (REPETIR 3.C) Selecionar os alunos do curso de "Engenharia" em ordem alfabética.
+cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia%" ORDER BY nome;')
+dados_engenheiro = cursor.fetchall()
+for engenheiros in dados_engenheiro:
+    print(engenheiros)
 
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit the changes

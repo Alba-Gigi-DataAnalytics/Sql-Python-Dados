@@ -81,6 +81,18 @@ cursor.execute('SELECT COUNT(*) FROM tb_alunos;')
 total_alunos = cursor.fetchone()[0]
 print(f'\nTotal de {total_alunos} alunos.')
 
+# 4. Atualizar o curso "Engineering Computacao" para "Engenharia da Computacao"
+cursor.execute('UPDATE tb_alunos SET curso="Engenharia da Computacao" WHERE curso="Engineering Computacao";')
+update_count = cursor.rowcount
+print(f'Número de registros atualizados: {update_count}')
+
+# (REPETIR) Selecionar os alunos do curso de "Engenharia" em ordem alfabética.
+cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia%" ORDER BY nome;')
+dados_engenheiro = cursor.fetchall()
+for engenheiros in dados_engenheiro:
+    print(engenheiros)
+
+
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit the changes
 conexao.commit()
