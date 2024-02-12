@@ -70,7 +70,7 @@ for maiores in dados_maiores_vinte:
     print(maiores)
 
 # (3.c) Selecionar os alunos do curso de "Engenharia" em ordem alfabética.
-cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia" ORDER BY nome;')
+cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia%" ORDER BY nome;')
 dados_engenheiro = cursor.fetchall()
 for engenheiros in dados_engenheiro:
     print(engenheiros)

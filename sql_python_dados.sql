@@ -4,7 +4,7 @@
 # import all libraries   
 import sqlite3
 # Criar uma conexão com o banco de dados SQLite > apontador arquivo a ser utilizado.
-conexao = sqlite3.connect('')
+conexao = sqlite3.connect('sql_python_dados')
 # Criar um objeto cursor, para passar as informacoes de conexao
 cursor = conexao.cursor()
 
@@ -71,7 +71,7 @@ for maiores in dados_maiores_vinte:
     print(maiores)
 
 # (3.c) Selecionar os alunos do curso de "Engenharia" em ordem alfabética.
-cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia" ORDER BY nome;')
+cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia%" ORDER BY nome;')
 dados_engenheiro = cursor.fetchall()
 for engenheiros in dados_engenheiro:
     print(engenheiros)
