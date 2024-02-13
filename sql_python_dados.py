@@ -80,7 +80,7 @@ cursor.execute('SELECT COUNT(*) FROM tb_alunos;')
 total_alunos = cursor.fetchone()[0]
 print(f'\nTotal de {total_alunos} alunos.')
 
-# 4. Atualizar o curso "Engineering Computacao" para "Engenharia da Computacao"
+# (4.a) Atualizar o curso "Engineering Computacao" para "Engenharia da Computacao"
 cursor.execute('UPDATE tb_alunos SET curso="Engenharia da Computacao" WHERE curso="Engineering Computacao";')
 update_count = cursor.rowcount
 print(f'Número de registros atualizados: {update_count}')
@@ -93,19 +93,21 @@ for engenheiros in dados_engenheiro:
 
 # (4.b)DUPLICANDO PROPOSITALMENTE para DELETAR (registros de alunos [(tb_alunos)].
 five_students_data = [
-    (1, "Joao Nogueira", 22, "Engenharia"),
-    (2, "Janete Silva", 35, "Fisica Nuclear"),
-    (3, "Roberta Johnson", 19, "Matematica"),
-    (4, "Sarah Barbosa", 21, "Engineering Computacao"),
-    (5, "Michael Wilson", 23, "Computer Science")
+    (26, "Joao Nogueira", 22, "Engenharia"),
+    (27, "Janete Silva", 35, "Fisica Nuclear"),
+    (28, "Roberta Johnson", 19, "Matematica"),
+    (29, "Sarah Barbosa", 21, "Engineering Computacao"),
+    (30, "Michael Wilson", 23, "Computer Science")
 ]
 # Comando INSERT sintaxe: INSERT INTO nome_tabela("campo1", "campo2", ...) VALUES ("valor1", "valor2",...);
 cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (?, ?, ?, ?)', five_students_data)
 
-# (4.b) APAGAR registros de alunos [(tb_alunos)], instrução DELETE cláusula ROWID e EXISTS para manter apenas os
-# registro MAIS recentes dentro conjuntos de dados DUPLICADOS (primeiro identificar e depois excluir).
-# (*) ROWID é usado para identificar exclusivamente cada linha da tabela. Cada linha da tabela tem um ROWID distinto.
-cursor.execute('DELETE FROM tb_alunso WHERE nome = "Sarah Barbosa";')
+# (4.b) APAGAR registros de alunos [(tb_alunos)], instrução DELETE 
+# Registro MAIS recentes no conjuntos dados DUPLICADOS (primeiro identificar e depois excluir).
+# SIMPLES uso do DELETE (registros de alunos [(tb_alunos)]
+cursor.execute('DELETE FROM tb_alunos WHERE nome = "Sarah Barbosa";')
+# SUBCONJUNTO usando cláusula ROWID e EXISTS para identificar exclusivamente cada linha da tabela. 
+# Cada linha da tabela tem um ROWID distinto.
 cursor.execute('DELETE FROM tb_alunos WHERE ROWID NOT IN (SELECT MAX(ROWID) FROM tb_alunos GROUP BY nome, idade, curso);')
 
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
