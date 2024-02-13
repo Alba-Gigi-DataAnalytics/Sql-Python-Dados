@@ -86,12 +86,22 @@ cursor.execute('UPDATE tb_alunos SET curso="Engenharia da Computacao" WHERE curs
 update_count = cursor.rowcount
 print(f'Número de registros atualizados: {update_count}')
 
-# (REPETIR) Selecionar os alunos do curso de "Engenharia" em ordem alfabética.
-cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia%" ORDER BY nome;')
-dados_engenheiro = cursor.fetchall()
-for engenheiros in dados_engenheiro:
-    print(engenheiros)
+# (4.b)DUPLICANDO PROPOSITALMENTE PARA DELETAR: 5 registros de alunos na tabela ALUNOS (tb_alunos).
+five_students_data = [
+    (26, "Joao Nogueira", 22, "Engenharia"),
+    (27, "Janete Silva", 35, "Fisica Nuclear"),
+    (28, "Roberta Johnson", 19, "Matematica"),
+    (29, "Sarah Barbosa", 21, "Engineering Computacao"),
+    (30, "Michael Wilson", 23, "Computer Science")
+]
 
+# Comando INSERT sintaxe: INSERT INTO nome_tabela("campo1", "campo2", ...) VALUES ("valor1", "valor2",...);
+cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (?, ?, ?, ?)', five_students_data)
+
+(4.c) Remover registro DUPLICADOS
+ROWID é usado para identificar exclusivamente cada linha da tabela. 
+Cada linha da tabela tem um ROWID distinto.
+ 
 
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit the changes

@@ -1,12 +1,12 @@
 ### ESTRUTURA GERAL PARA FAZER A CONEXAO
 # SCRIPT DE BANCO DE DADOS: arquivo (ou conjunto de comandos) que quando executados criam um BD.
 
-# import all libraries   
+# Import all libraries   
 import sqlite3
 # Criar uma conexão com o banco de dados SQLite > apontador arquivo a ser utilizado.
-conexao = sqlite3.connect('sql_python_dados')
+connection = sqlite3.connect('sql_python_dados')  # Replace 'your_database.db' with your actual database file
 # Criar um objeto cursor, para passar as informacoes de conexao
-cursor = conexao.cursor()
+cursor = connection.cursor()
 
 # Exercicios_Semana.5 Bootcamp Data Analytics: Banco de Dados SQL  
 # (1). Crie uma tabela chamada "alunos" com os seguintes campos: id(inteiro), nome (texto), idade (inteiro) e curso (texto)."""
@@ -23,7 +23,7 @@ five_students_data = [
 ]
 
 # Comando INSERT sintaxe: INSERT INTO nome_tabela("campo1", "campo2", ...) VALUES ("valor1", "valor2",...);
-# cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (?, ?, ?, ?)', five_students_data)
+cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (?, ?, ?, ?)', five_students_data)
 
 # Inserindo registros fazendo uso de uma List of Tuples, tabela tb_alunos (que ja tem 5 alunos).
 more_students_data = [
@@ -91,9 +91,27 @@ dados_engenheiro = cursor.fetchall()
 for engenheiros in dados_engenheiro:
     print(engenheiros)
 
+# (4.b)DUPLICANDO PROPOSITALMENTE para DELETAR (registros de alunos [(tb_alunos)].
+five_students_data = [
+    (1, "Joao Nogueira", 22, "Engenharia"),
+    (2, "Janete Silva", 35, "Fisica Nuclear"),
+    (3, "Roberta Johnson", 19, "Matematica"),
+    (4, "Sarah Barbosa", 21, "Engineering Computacao"),
+    (5, "Michael Wilson", 23, "Computer Science")
+]
+# Comando INSERT sintaxe: INSERT INTO nome_tabela("campo1", "campo2", ...) VALUES ("valor1", "valor2",...);
+cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (?, ?, ?, ?)', five_students_data)
+
+# (4.b) APAGAR registros de alunos [(tb_alunos)], instrução DELETE cláusula ROWID e EXISTS para manter apenas os
+# registro MAIS recentes dentro conjuntos de dados DUPLICADOS (primeiro identificar e depois excluir).
+# (*) ROWID é usado para identificar exclusivamente cada linha da tabela. Cada linha da tabela tem um ROWID distinto.
+cursor.execute('DELETE FROM tb_alunso WHERE nome = "Sarah Barbosa";')
+cursor.execute('DELETE FROM tb_alunos WHERE ROWID NOT IN (SELECT MAX(ROWID) FROM tb_alunos GROUP BY nome, idade, curso);')
+
 # Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit the changes
-conexao.commit()
-# Close the connection
-conexao.close()
+connection.commit()
 
+# Close the cursor and connection
+cursor.close()
+connection.close()
