@@ -60,6 +60,8 @@ cursor.executemany('INSERT INTO tb_alunos (id_aluno, nome, idade, curso) VALUES 
 # (3.a) Selecionar todos os registros da tabela "alunos".
 cursor.execute('SELECT * FROM tb_alunos;')
 cursor.execute('SELECT id_aluno, nome, idade, curso FROM tb_alunos;')
+
+# metodo .fetch() para buscar (all) todos ou (one) uma coluna da tabela
 dados_aluno = cursor.fetchall()
 for aluno in dados_aluno:
     print(aluno)
@@ -86,7 +88,7 @@ cursor.execute('UPDATE tb_alunos SET curso="Engenharia da Computacao" WHERE curs
 update_count = cursor.rowcount
 print(f'Número de registros atualizados: {update_count}')
 
-# (REPETIR 3.C) Selecionar os alunos do curso de "Engenharia" em ordem alfabética.
+# (REPETIR 3.C) Teremos mais alunso ao selecionar curso de "Engenharia".
 cursor.execute('SELECT * FROM tb_alunos WHERE curso LIKE "Engenharia%" ORDER BY nome;')
 dados_engenheiro = cursor.fetchall()
 for engenheiros in dados_engenheiro:
