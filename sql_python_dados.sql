@@ -1,6 +1,4 @@
-/* 
-
-### ESTRUTURA GERAL PARA FAZER A CONEXAO
+/* ESTRUTURA GERAL PARA FAZER A CONEXAO
 # SCRIPT DE BANCO DE DADOS: arquivo (ou conjunto de comandos) que quando executados criam um BD.
 
 # Import all libraries   
@@ -114,29 +112,31 @@ cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (
 
 # (4.b) Remova um aluno pelo seu ID.
 cursor.execute('DELETE FROM tb_alunos WHERE id_aluno = 11;')
+
 # (4.b) APAGAR registros alunos [(tb_alunos)], instrução DELETE cláusula ROWID e EXISTS para manter apenas os
 # registro MAIS recentes dentro conjuntos de dados DUPLICADOS (primeiro IDENTIFICA e depois DELETE).
 cursor.execute('DELETE FROM tb_alunos WHERE nome = "Sarah %" AND curso = "Engineering Computacao";')
+
 # (*) ROWID identifica exclusivamente cada linha DISTINCT tabela.
 cursor.execute('DELETE FROM tb_alunos WHERE ROWID NOT IN (SELECT MAX(ROWID) FROM tb_alunos GROUP BY nome, idade, curso);')
 
-# (5). Nova tabela CREATE [tb_clientes] + INSERT INTO registro ["id_cliente"]:
+# (5.a). Nova tabela CREATE [tb_clientes] + INSERT INTO registro ["id_cliente"]:
 # Crie uma tabela chamada "clientes" com os campos: id (chave primária), nome (texto), idade (inteiro) e saldo (float). 
-
 # Executar a instrução SQL para criar a tabela "clientes".
 cursor.execute('CREATE TABLE IF NOT EXISTS tb_clientes (id_cliente INT NOT NULL PRIMARY KEY, nome VARCHAR(50) NOT NULL, idade INT NOT NULL, saldo REAL NOT NULL);')
 
-# (5.a) Define uma lista de nomes
+# (5.b) Define uma lista de nomes
 full_names = ["Ana Silva", "Bruno Santos", "Camila Oliveira", "Diego Pereira", "Eduarda Lima", "Felipe Costa", "Gabriela Ferreira", "Hugo Souza", "Isabela Rodrigues", "João Almeida",
                    "Kátia Silva", "Lucas Santos", "Mariana Pereira", "Nathan Lima", "Olivia Ferreira", "Pedro Costa", "Quiteria Sousa", "Rafael Rodrigues", "Sofia Almeida", "Thiago Silva"]
 # Gerar dados aleatórios para 20 clientes (nomes, idades e saldos)
 insert_data = []
-for i in range(1, 21):
+for id_cliente in range(1, 21):
     # Biblioteca RANDOM e method .choice() para popular table.
     nome = random.choice(full_names)
     idade = random.randint(20, 60)
     saldo = round(random.uniform(500.0, 2000.0), 2)
-    insert_data.append((i, nome, idade, saldo))
+    insert_data.append((id_cliente, nome, idade, saldo))
+
 # (5.b) INSERT INTO "tb_clientes" Loop FOR com a variável i sendo usada para criar tipo AUTO_INCREMENT registros exclusivos [id_cliente]. 
 # Isso garante que cada linha na tabela tb_clientes terá um id_cliente distinto.
 cursor.executemany('INSERT INTO tb_clientes (id_cliente, nome, idade, saldo) VALUES (?, ?, ?, ?);', insert_data)
@@ -150,12 +150,12 @@ cursor.execute("SELECT nome, idade FROM tb_clientes WHERE idade > 30;")
 result_a = cursor.fetchall()
 print("Result (a):", result_a)
 
-# (6.b) Calcular o saldo médio dos clientes AVG(saldo)
+# (6.b) AVG(saldo) Calcular o saldo médio dos clientes AVG(saldo)
 cursor.execute("SELECT AVG(saldo) FROM tb_clientes;")
 result_b = cursor.fetchone()[0]
 print("Result (b):", result_b)
 
-# (6.c) Encontrar tb_cliente que tenha o saldo máximo MAX(saldo).
+# (6.c) MAX(saldo) Encontrar tb_cliente que tenha o saldo máximo.
 cursor.execute("SELECT * FROM tb_clientes WHERE saldo = (SELECT MAX(saldo) FROM tb_clientes);")
 result_c = cursor.fetchall()
 print("Result (c):", result_c)
@@ -171,10 +171,10 @@ cursor.execute("UPDATE tb_clientes SET saldo = 1100.50 WHERE id_cliente=2;")
 update_count = cursor.rowcount
 print(f'Número de registros atualizados: {update_count}')
 
-# (7.b) Remova um cliente pelo seu ID.
+# (7.b) DELETE Remova um cliente pelo seu ID.
 cursor.execute("DELETE FROM tb_clientes WHERE id_cliente=7;")
 
-# 8. Junção de Tabelas - CREATE TABLES [tb_compras] com o esquema especificado.
+# 8. JOIN Junção de Tabelas - CREATE TABLES [tb_compras] com o esquema especificado.
 # (8.a) Crie uma tabela chamada 'compras' 
 # tb_compras: id (primary key), id_cliente (foreign key references id tb_cliente), produto (text),  valor (real).
 cursor.execute('''
@@ -194,24 +194,24 @@ produtos_data = [
     "Impressora", "Câmera", "Fone de Ouvido", "Roteador", "Console",
     "Caixa de Som", "Máquina de Lavar", "Geladeira", "Fogão"
 ]
-for i in range(1, 21):
+# Gerar dados aleatórios para 20 clientes (cliente, produto, valor)
+insert_data = []
+for id_compra in range(1, 21):
+    # Biblioteca RANDOM e method .choice() para popular table.
     id_cliente = random.randint(1, 20)
-    produto = random.choice(produto_data)
+    produto = random.choice(produtos_data)
     valor = round(random.uniform(100.0, 2000.0), 2)
-    produtos_data.append((i, id_cliente, produto, valor))
+    insert_data.append((id_compra, id_cliente, produto, valor))
+
 # Insert the purchases into the "purchases" table
-    cursor.execute('INSERT INTO tb_compras(id_cliente, produto, valor) VALUES (?, ?, ?)', (id_cliente, produto, valor))
+cursor.executemany('INSERT INTO tb_compras(id_compra, id_cliente, produto, valor) VALUES (?, ?, ?, ?)', insert_data)
 
 # (8.c) Recuperar e exibir nome id_cliente, produto e valor > cada compra usando uma instrução SELECT operação JOIN.
 # Instrução SELECT recupera dados da tabela e busca registros usando método fetchall().
-cursor.execute('''
-    SELECT tb_clientes.nome, tb_compras.produto, tb_compras.valor
-    FROM tb_clientes
-    JOIN tb_compras ON tb_clientes.id_cliente = tb_compras.id_cliente;
-''')
-compras_info = cursor.fetchall()
-for purchase in compras_info:
-    print(f"Cliente: {purchase[0]}, Produto: {purchase[1]}, Valor: R${purchase[1]:.2f}")
+cursor.execute("SELECT tb_clientes.nome, tb_compras.produto, tb_compras.valor FROM tb_clientes JOIN tb_compras ON tb_clientes.id_cliente = tb_compras.id_cliente;")
+compra_info = cursor.fetchall()
+for purchase in compra_info:
+    print('Cliente:', purchase[0], '| Produto:', purchase[1], '| Valor: R$', f'{purchase[2]:.2f}')
 
 # Enviar e fechar conexao, evitando conflito com o sistema gerenciador 
 # Commit changes
