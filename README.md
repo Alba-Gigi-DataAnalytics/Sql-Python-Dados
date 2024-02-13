@@ -12,4 +12,4 @@ Step by step:
 5) Rodar SCRIPT **Terminal VS Code** .print() > DBeaver
 6) **KANBAN Projeto** RUNNING + COMMIT + -[] Tasks GitHub
 7) Rodar SCRIPT **Terminal DBEAVER**.
-8) *Entregar* projeto SQL PYTHON. 
+8) **Entregar** projeto SQL PYTHON. 
