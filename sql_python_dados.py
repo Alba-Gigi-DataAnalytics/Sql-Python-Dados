@@ -106,6 +106,7 @@ cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (
 # Registro MAIS recentes no conjuntos dados DUPLICADOS (primeiro identificar e depois excluir).
 # SIMPLES uso do DELETE (registros de alunos [(tb_alunos)]
 cursor.execute('DELETE FROM tb_alunos WHERE nome = "Sarah Barbosa";')
+
 # SUBCONJUNTO usando cláusula ROWID e EXISTS para identificar exclusivamente cada linha da tabela. 
 # Cada linha da tabela tem um ROWID distinto.
 cursor.execute('DELETE FROM tb_alunos WHERE ROWID NOT IN (SELECT MAX(ROWID) FROM tb_alunos GROUP BY nome, idade, curso);')
