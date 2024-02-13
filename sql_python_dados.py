@@ -125,7 +125,7 @@ cursor.execute('DELETE FROM tb_alunos WHERE id_aluno = 11;')
 # Executar a instrução SQL para criar a tabela "clientes".
 cursor.execute('CREATE TABLE IF NOT EXISTS tb_clientes (id_cliente INT NOT NULL PRIMARY KEY, nome VARCHAR(50) NOT NULL, idade INT NOT NULL, saldo REAL NOT NULL);')
 
-# (5.a) Define uma lista de nomes
+# (5.a) Define uma lista de nome
 brazilian_names = ["Ana", "Bruno", "Camila", "Diego", "Eduarda", "Felipe", "Gabriela", "Hugo", "Isabela", "João",
                    "Kátia", "Lucas", "Mariana", "Nathan", "Olivia", "Pedro", "Quiteria", "Rafael", "Sofia", "Thiago"]
 # Gerar dados aleatórios para 20 clientes (nomes, idades e saldos)
