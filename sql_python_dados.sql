@@ -1,8 +1,10 @@
 /* ### ESTRUTURA GERAL PARA FAZER A CONEXAO
 # SCRIPT DE BANCO DE DADOS: arquivo (ou conjunto de comandos) que quando executados criam um BD.
 
-# import all libraries   
+# Import all libraries   
 import sqlite3
+import random
+
 # Criar uma conexão com o banco de dados SQLite > apontador arquivo a ser utilizado.
 conexao = sqlite3.connect('sql_python_dados')
 # Criar um objeto cursor, para passar as informacoes de conexao
@@ -61,7 +63,7 @@ cursor.executemany('INSERT INTO tb_alunos (id_aluno, nome, idade, curso) VALUES 
 cursor.execute('SELECT * FROM tb_alunos;')
 cursor.execute('SELECT id_aluno, nome, idade, curso FROM tb_alunos;')
 
-# metodo .fetch() para buscar (all) todos ou (one) uma coluna da tabela
+# Instrução SELECT recupera dados da tabela e buscar todos os registros usando método fetchall().
 dados_aluno = cursor.fetchall()
 for aluno in dados_aluno:
     print(aluno)
@@ -80,6 +82,8 @@ for engenheiros in dados_engenheiro:
 
 # (3.d) Contar o número total de alunos na tabela
 cursor.execute('SELECT COUNT(*) FROM tb_alunos;')
+
+# Instrução SELECT recuperar dados da tabela e buscar apenas um registro usando método fetchone().
 total_alunos = cursor.fetchone()[0]
 print(f'\nTotal de {total_alunos} alunos.')
 
@@ -104,20 +108,42 @@ five_students_data = [
 ]
 cursor.executemany('INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (?, ?, ?, ?)', five_students_data)
 
-# (4.b) APAGAR registros de alunos [(tb_alunos)], instrução DELETE 
-# Registro MAIS recentes no conjuntos dados DUPLICADOS (primeiro identificar e depois excluir).
-# SIMPLES uso do DELETE (registros de alunos [(tb_alunos)]
+# (4.b) APAGAR registros de alunos [(tb_alunos)], instrução DELETE cláusula ROWID e EXISTS para manter apenas os
+# registro MAIS recentes dentro conjuntos de dados DUPLICADOS (primeiro identificar e depois excluir).
+# (*) ROWID é usado para identificar exclusivamente cada linha da tabela. Cada linha da tabela tem um ROWID distinto.
 cursor.execute('DELETE FROM tb_alunos WHERE nome = "Sarah Barbosa";')
-
-# SUBCONJUNTO usando cláusula ROWID e EXISTS para identificar exclusivamente cada linha da tabela. 
-# Cada linha da tabela tem um ROWID distinto.
 cursor.execute('DELETE FROM tb_alunos WHERE ROWID NOT IN (SELECT MAX(ROWID) FROM tb_alunos GROUP BY nome, idade, curso);')
 
-# Para enviar e fechar conexao, evitando conflito com o sistema gerenciador 
-# Commit the changes
-conexao.commit()
-# Close the connection
-conexao.close()
+# (4.b) Remova um aluno pelo seu ID.
+cursor.execute('DELETE FROM tb_alunos WHERE id_aluno = 11;')
+
+# (5). Nova tabela CREATE [tb_clientes] + INSERT INTO registro ["id_cliente"]:
+# Crie uma tabela chamada "clientes" com os campos: id (chave primária), nome (texto), idade (inteiro) e saldo (float). 
+# Executar a instrução SQL para criar a tabela "clientes".
+cursor.execute('CREATE TABLE IF NOT EXISTS tb_clientes (id_cliente INT NOT NULL PRIMARY KEY, nome VARCHAR(50) NOT NULL, idade INT NOT NULL, saldo REAL NOT NULL);')
+
+# (5.a) Define uma lista de nomes
+brazilian_names = ["Ana", "Bruno", "Camila", "Diego", "Eduarda", "Felipe", "Gabriela", "Hugo", "Isabela", "João",
+                   "Kátia", "Lucas", "Mariana", "Nathan", "Olivia", "Pedro", "Quiteria", "Rafael", "Sofia", "Thiago"]
+# Gerar dados aleatórios para 20 clientes (nomes, idades e saldos)
+insert_data = []
+for i in range(1, 21):
+    # Biblioteca com method para popular table: random.choice().
+    name = random.choice(brazilian_names)
+    age = random.randint(20, 60)
+    balance = round(random.uniform(500.0, 2000.0), 2)
+    insert_data.append((i, name, age, balance))
+    
+# (5.b) Criar e executar o comando INSERT na tabela "clientes".
+# Loop FOR gera dados aleatórios (5.b), variável i é usada para criar registros exclusivos [id_cliente]. 
+# Isso garante que cada linha na tabela tb_clientes terá um id_cliente distinto.
+cursor.executemany('INSERT INTO tb_clientes (id_cliente, nome, idade, saldo) VALUES (?, ?, ?, ?);', insert_data)
+
+# Enviar e fechar conexao, evitando conflito com o sistema gerenciador 
+# Commit changes
+connection.commit()
+# Close connection
+connection.close()
 **/
 
 
