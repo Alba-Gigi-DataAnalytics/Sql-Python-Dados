@@ -2,16 +2,16 @@
 -- Criar uma conexão com o banco de dados SQLite > apontador arquivo a ser utilizado.
 -- (1). Crie uma tabela chamada "alunos" com os seguintes campos: id(inteiro), nome (texto), idade (inteiro) e curso (texto)."""
 
-CREATE TABLE IF NOT EXISTS tb_alunos(
-							id_aluno INT NOT NULL PRIMARY KEY,
-							nome VARCHAR(50) NOT NULL,
-							idade INT NOT NULL,
-							curso VARCHAR(50) NOT NULL);
+CREATE TABLE IF NOT EXISTS tb_alunos(id_aluno INT NOT NULL PRIMARY KEY,
+				nome VARCHAR(50) NOT NULL,
+				idade INT NOT NULL,
+				curso VARCHAR(50) NOT NULL);
 
 -- (2). Insira pelo menos 5 registros de alunos na tabela que você criou no exercício anterior.
 -- Populando fazendo uso de uma List of Tuples
 
-INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES 	(1, "Joao Nogueira", 22, "Engenharia"),
+INSERT INTO tb_alunos(id_aluno, nome, idade, curso) 
+	VALUES 	(1, "Joao Nogueira", 22, "Engenharia"),
 		(2, "Janete Silva", 35, "Fisica Nuclear"),
 		(3, "Roberta Johnson", 19, "Matematica"),
 		(4, "Sarah Barbosa", 21, "Engineering Computacao"),
@@ -20,7 +20,8 @@ INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES 	(1, "Joao Nogueira",
 -- MAIS registros fazendo List of Tuples, tabela tb_alunos (que ja tem 5 alunos).
 
 
-INSERT INTO tb_alunos (id_aluno, nome, idade, curso) VALUES	(6, "André Oliveira", 24, "Ciência da Computação"),
+INSERT INTO tb_alunos (id_aluno, nome, idade, curso) 
+	VALUES	(6, "André Oliveira", 24, "Ciência da Computação"),
 		(7, "Mariana Santos", 28, "Engenharia Elétrica"),
  		(8, "Fábio Costa", 26, "Administração"),
 		(9, "Camila Lima", 22, "Medicina"),
@@ -84,11 +85,12 @@ WHERE curso LIKE "Engenharia%"
 ORDER BY nome;
 
 -- (4.b)DUPLICANDO PROPOSITALMENTE para DELETAR (registros de alunos [(tb_alunos)].
-INSERT INTO tb_alunos(id_aluno, nome, idade, curso) VALUES (26, "Joao Nogueira", 22, "Engenharia"),
-    (27, "Janete Silva", 35, "Fisica Nuclear"),
-    (28, "Roberta Johnson", 19, "Matematica"),
-    (29, "Sarah Barbosa", 21, "Engenharia da Computacao"),
-    (30, "Michael Wilson", 23, "Computer Science");
+INSERT INTO tb_alunos(id_aluno, nome, idade, curso) 
+	VALUES 	(26, "Joao Nogueira", 22, "Engenharia"),
+    		(27, "Janete Silva", 35, "Fisica Nuclear"),
+    		(28, "Roberta Johnson", 19, "Matematica"),
+    		(29, "Sarah Barbosa", 21, "Engenharia da Computacao"),
+    		(30, "Michael Wilson", 23, "Computer Science");
 
 -- (4.b) Remova um aluno pelo seu ID.
 DELETE FROM tb_alunos
@@ -100,11 +102,10 @@ WHERE nome = "Sarah %" AND curso = "Engineering Computacao";
 
 -- (5.a). Nova tabela CREATE [tb_clientes] + INSERT INTO registro ["id_cliente"]:
 -- Crie uma tabela chamada "clientes" com os campos: id (chave primária), nome (texto), idade (inteiro) e saldo (float). 
-CREATE TABLE IF NOT EXISTS tb_clientes (
-							id_cliente INT NOT NULL PRIMARY KEY,
-							nome VARCHAR(50) NOT NULL,
-							idade INT NOT NULL,
-							saldo REAL NOT NULL);
+CREATE TABLE IF NOT EXISTS tb_clientes (id_cliente INT NOT NULL PRIMARY KEY,
+					nome VARCHAR(50) NOT NULL,
+					idade INT NOT NULL,
+					saldo REAL NOT NULL);
 
 -- (5.b) INSERT INTO "tb_clientes" Loop FOR com a variável i sendo usada para criar tipo AUTO_INCREMENT registros exclusivos [id_cliente]. 
 INSERT INTO tb_clientes (id_cliente, nome, idade, saldo)
@@ -151,10 +152,10 @@ WHERE id_cliente=7;
 -- (8.a) Crie uma tabela chamada 'compras' 
 
 CREATE TABLE IF NOT EXISTS tb_compras (id_compra INT NOT NULL PRIMARY KEY,
-       							id_cliente INT NOT NULL,
-								produto VARCHAR(150) NOT NULL,
-								valor REAL NOT NULL,
-        						FOREIGN KEY (id_cliente) REFERENCES tb_clientes(id_cliente));
+       					id_cliente INT NOT NULL,
+					produto VARCHAR(150) NOT NULL,
+					valor REAL NOT NULL,
+        				FOREIGN KEY (id_cliente) REFERENCES tb_clientes(id_cliente));
 
 -- (8.b) Inserir 20 compras > RANDOM produtos > valores aleatórios e associados > id_cliente (FK) existentes da tabela tb_clientes (PK).
 -- Gerar dados aleatórios para 20 clientes (cliente, produto, valor)
@@ -168,3 +169,4 @@ SELECT tb_clientes.nome, tb_compras.produto, tb_compras.valor
 FROM tb_clientes
 JOIN tb_compras ON tb_clientes.id_cliente = tb_compras.id_cliente;
 
+-- FIM SQL PYTHON
